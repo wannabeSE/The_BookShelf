@@ -38,25 +38,28 @@ class _DisplayState extends State<Display> {
                       const SizedBox(
                         height:150,
                       ),
-                      SizedBox(
-                        width: 500,
-                        child:RichText(text: TextSpan(
-                        children: [
-                        TextSpan(
-                          text: 'Description: ${widget.book['description']}',
-                          style: Theme.of(context).
-                          textTheme.
-                          headline6?.
-                          copyWith(color: Colors.black,
-                        fontWeight: FontWeight.normal),
-                         
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                          width: 500,
+                          child:RichText(text: TextSpan(
+                          children: [
+                          TextSpan(
+                            text: 'Description: ${widget.book['description']}',
+                            style: Theme.of(context).
+                            textTheme.
+                            headline6?.
+                            copyWith(color: Colors.black,
+                          fontWeight: FontWeight.normal),
+                           
+                          ),
+                              
+                            ],
+                          ),
                         ),
-                            
-                          ],
-                        ),
-                      ),
-                      
+                        
                     ),
+                      ),
                     const SizedBox(
                       height: 15,
                     ),

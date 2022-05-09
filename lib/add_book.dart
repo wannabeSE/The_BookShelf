@@ -24,6 +24,7 @@ final TextEditingController description =  TextEditingController();
 final TextEditingController price=  TextEditingController();
 final TextEditingController picname=  TextEditingController();
 final TextEditingController qty=  TextEditingController();
+bool isLoading=false;
 File? file;
 UploadTask? task;
 String? imageUrl;
@@ -148,16 +149,50 @@ class _AddBookState extends State<AddBook> {
               const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
+            Row(
+              children: [
+                Padding(
+                  padding:  EdgeInsets.only(left: 90),
+                  child: ElevatedButton(
+                    
+                    onPressed: (){
+                      
+                      pickImg();
+                      
+                      // Fluttertoast.showToast(msg: 'Image has been uploaded');
+                    }, 
+                    child: const Text('Select Photo')
+                    ),
+                ),
+                  Text('        '),
+                  SizedBox(
+                    height: 40,
+                    width: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                      primary:Colors.green,
+                      
+                    ),
               onPressed: (){
+                setState(() {
+                    isLoading=true;
+                });
+                Future.delayed(Duration(seconds: 3),(){
+                    setState(() {
+                      isLoading=false;
+                      Fluttertoast.showToast(msg: "Image has been successfully uploaded");
+                    });
+                });
                 
-                uploadPhoto();
-                
-                Fluttertoast.showToast(msg: 'Image has been uploaded');
               }, 
-              child: const Text('Upload Photo')
+              child:isLoading? CircularProgressIndicator(color: Colors.white,): Text('Upload')
               ),
-              const SizedBox(
+                  )
+              ],
+            ),
+             
+             
+               const SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -175,23 +210,23 @@ class _AddBookState extends State<AddBook> {
       ),
     );
   }
-  
-  Future uploadPhoto () async{
-      var pickedImage = await ImagePicker().pickImage(
+  Future pickImg() async{
+    var pickedImage = await ImagePicker().pickImage(
       source: ImageSource.gallery, 
       maxWidth: 1920,
       maxHeight: 1200,   
       imageQuality: 80); 
-
-  
-
+      uploadPhoto(pickedImage);
+  }
+  Future uploadPhoto (var img) async{    
   //upload and download url
   Reference ref = FirebaseStorage.instance.ref().child(picname.text);
-  await ref.putFile(File(pickedImage!.path));
-  imageUrl = await ref.getDownloadURL();
-  const CircularProgressIndicator();
-  }
+  await ref.putFile(File(img!.path));
   
+  imageUrl = await ref.getDownloadURL();
+  
+  }
+
   void clear(){
 
     title.text=description.text=genre.text=price.text=picname.text=qty.text='';  
