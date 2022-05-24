@@ -1,4 +1,5 @@
 import 'package:bookshelf/details_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,13 +9,15 @@ class ViewPage extends StatefulWidget {
   @override
   State<ViewPage> createState() => _ViewPageState();
 }
-const int k=0;
+int k=0;
 List books=[];
 class _ViewPageState extends State<ViewPage> {
-
+  
   fetchBooks()async{
     QuerySnapshot snap= await FirebaseFirestore.instance.collection('Books').get();
+    if(k==0){
     setState(() {
+      
       for( int i =0;i<snap.docs.length;i++){
         books.add(
           {
@@ -27,14 +30,20 @@ class _ViewPageState extends State<ViewPage> {
           }
         );
       }
+      k=1;
+    
     });
-    return snap.docs;
+    }
+    
+
   }
-  @override
+
+
   void initState(){
     fetchBooks();
     super.initState();
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

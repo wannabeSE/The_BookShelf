@@ -37,9 +37,17 @@ class _OrdersState extends State<Orders> {
             return Card(
               elevation: 3,
               child: ListTile(
-                leading: Text(snap['address'],style:const TextStyle(fontSize: 15),),
+                title: Text(snap['address'],style:const TextStyle(fontSize: 15),),
                 // title: Text('    ${snap['price']}' '  (${snap['quantity']} pcs)',style:const TextStyle(fontSize: 15),),
-                trailing:Text(snap['Ordered-by']) ,
+                subtitle:Text(snap['Ordered-by']),
+                trailing:GestureDetector(
+                  child: CircleAvatar(
+                    child: Icon(Icons.check_box),
+                  ),
+                onTap: (){
+                  FirebaseFirestore.instance.collection('Confirmed-Orders').doc(snap.id).delete();
+                },
+                ) ,
                  
               
               
